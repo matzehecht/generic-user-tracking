@@ -1,6 +1,6 @@
 {
   "name": "gut-react",
-  "version": "0.0.0",
+  "version": "1.0.0-alpha.0",
   "description": "Generic usage tracking utility for react",
   "keywords": [
     "usage",
@@ -41,7 +41,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "gut-js": "^0.0.0"
+    "gut-js": "^1.0.0-alpha.0"
   },
   "peerDependencies": {
     "react": "^17.0.2",
