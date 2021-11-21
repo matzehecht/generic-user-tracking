@@ -5,14 +5,14 @@ const listenerRegistry: { element?: HTMLElement; listener: EventListener; type: 
 
 const addListeners = (node: Node, tracker: Tracker, prefix: string) => {
   // Only track HTMLElements
-  if (!(node instanceof HTMLElement)) return;
+  if (!(node instanceof HTMLElement || node instanceof Document)) return;
 
   const matchAttribute = getMatchAttribute(prefix);
 
   const nodeList = node.querySelectorAll<HTMLElement>(matchAttribute);
   const elements = Array.from(nodeList);
 
-  if (node.matches(matchAttribute)) {
+  if (node instanceof HTMLElement && node.matches(matchAttribute)) {
     elements.unshift(node);
   }
 
@@ -20,30 +20,34 @@ const addListeners = (node: Node, tracker: Tracker, prefix: string) => {
     const eventType = element.dataset[`${prefix}Event`];
 
     if (!eventType) {
-      const error = new Error('gu-tracking: HTML attribute given but empty');
+      const error = new Error('gut-js: HTML attribute given but empty');
       console.error(error, element);
       throw error;
     }
 
     const listener: EventListener = (event) => {
-      const dataset = reduceDataset(prefix, element.dataset);
+      if (!(event.currentTarget instanceof HTMLElement)) return;
+
+      const currentTarget = event.currentTarget;
+
+      const dataset = reduceDataset(prefix, currentTarget.dataset);
 
       const context = {
-        element,
+        element: event.currentTarget,
         event,
         location: window.location,
       };
 
-      tracker(eventType, dataset, context);
+      tracker(event.type, dataset, context);
     };
+
+    element.addEventListener(eventType, listener);
 
     listenerRegistry.push({
       element,
       type: eventType,
       listener,
     });
-
-    element.addEventListener(eventType, listener);
   });
 };
 

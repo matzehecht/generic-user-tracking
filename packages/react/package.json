@@ -38,7 +38,8 @@
     "build:ts:es": "tsc -p tsconfig.es.json",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "lint:fix:dryrun": "eslint . --fix-dry-run"
+    "lint:fix:dryrun": "eslint . --fix-dry-run",
+    "test": "jest"
   },
   "dependencies": {
     "gut-js": "^0.0.0"
