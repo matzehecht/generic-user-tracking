@@ -1,0 +1,49 @@
+{
+  "name": "gut-react",
+  "version": "0.0.0",
+  "description": "Generic usage tracking utility for react",
+  "keywords": [
+    "usage",
+    "user",
+    "tracking",
+    "react",
+    "hook"
+  ],
+  "homepage": "https://github.com/matzehecht/generic-user-tracking/packages/react#readme",
+  "bugs": {
+    "url": "https://github.com/matzehecht/generic-user-tracking/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matzehecht/generic-user-tracking.git",
+    "directory": "packages/react"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Matthias Hecht",
+    "email": "dev@hecht.space",
+    "url": "https://hecht.space"
+  },
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "files": [
+    "lib",
+    "es",
+    "bundle.min.js",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "npm run build:ts && npm run build:ts:es",
+    "build:ts": "tsc",
+    "build:ts:es": "tsc -p tsconfig.es.json",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:fix:dryrun": "eslint . --fix-dry-run"
+  },
+  "dependencies": {
+    "gut-js": "^0.0.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "gut-js",
+  "version": "0.0.0",
+  "description": "Generic usage tracking utility for vanilla js",
+  "keywords": [
+    "usage",
+    "user",
+    "tracking",
+    "js"
+  ],
+  "homepage": "https://github.com/matzehecht/generic-user-tracking/packages/js#readme",
+  "bugs": {
+    "url": "https://github.com/matzehecht/generic-user-tracking/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matzehecht/generic-user-tracking.git",
+    "directory": "packages/js"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Matthias Hecht",
+    "email": "dev@hecht.space",
+    "url": "https://hecht.space"
+  },
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "files": [
+    "lib",
+    "es",
+    "bundle.min.js",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "npm run build:ts && npm run build:ts:es",
+    "build:ts": "tsc",
+    "build:ts:es": "tsc -p tsconfig.es.json",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:fix:dryrun": "eslint . --fix-dry-run",
+    "test": "jest"
+  }
+}
