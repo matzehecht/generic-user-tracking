@@ -24,18 +24,17 @@
     "email": "dev@hecht.space",
     "url": "https://hecht.space"
   },
-  "main": "lib/index.js",
-  "module": "es/index.js",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
   "files": [
     "lib",
-    "es",
-    "bundle.min.js",
     "README.md"
   ],
   "scripts": {
-    "build": "npm run build:ts && npm run build:ts:es",
-    "build:ts": "tsc",
-    "build:ts:es": "tsc -p tsconfig.es.json",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:fix:dryrun": "eslint . --fix-dry-run",
@@ -45,6 +44,7 @@
     "gut-js": "^0.0.0"
   },
   "peerDependencies": {
-    "react": "^17.0.2"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }
