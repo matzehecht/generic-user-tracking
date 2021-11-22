@@ -38,7 +38,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:fix:dryrun": "eslint . --fix-dry-run",
-    "test": "jest"
+    "test": "jest",
+    "watch": "tsc --watch"
   },
   "dependencies": {
     "gut-js": "^0.0.1-next.0"

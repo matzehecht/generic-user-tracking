@@ -6,6 +6,7 @@ export const stripDatasetKey = (key: string, prefix: string) => firstCharacterLo
 
 export const getMatchAttribute = (prefix: string) => `[data-${prefix}-event]`;
 
+// filter dataset for properties not containing prefix and stripping prefix
 export const reduceDataset = (prefix: string, dataset: DOMStringMap) =>
   Object.keys(dataset).reduce(
     (prev, key) => (key.startsWith(prefix) ? { ...prev, [stripDatasetKey(key, prefix)]: dataset[key] } : prev),

@@ -1,0 +1,33 @@
+name: Review
+
+on:
+  pull_request:
+    branches:
+      - main
+      - next
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Use NodeJS 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - name: Install dependencies
+        run: |
+          npm ci
+          npx lerna bootstrap --hoist
+      - name: Run tests
+        run: npx lerna run test
+      - name: Run build
+        run: npx lerna run build
+      - name: check npm
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm whoami
