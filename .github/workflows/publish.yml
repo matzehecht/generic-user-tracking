@@ -23,6 +23,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm whoami
+      - name: Install dependencies
+        run: |
+          npx lerna bootstrap --hoist
+      - name: Run tests
+        run: npx lerna run test
+      - name: Run build
+        run: npx lerna run build
       - name: 'Version and publish'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -31,8 +38,8 @@ jobs:
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor}}@users.noreply.github.com"
           if [ ${{ github.base_ref }} = next ]; then
-            npx lerna version --conventional-commits --conventional-prerelease --preid next --yes --create-release
+            npx lerna version --conventional-commits --conventional-prerelease --preid next --yes --create-release github
           else
-            npx lerna version --conventional-commits --conventional-graduate --yes --create-release
+            npx lerna version --conventional-commits --conventional-graduate --yes --create-release github
           fi
           npx lerna publish from-git --yes
