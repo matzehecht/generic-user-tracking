@@ -1,6 +1,6 @@
 {
   "name": "gut-react",
-  "version": "0.0.1-next.0",
+  "version": "0.1.0-next.0",
   "description": "Generic usage tracking utility for react",
   "keywords": [
     "usage",
@@ -38,10 +38,11 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:fix:dryrun": "eslint . --fix-dry-run",
-    "test": "jest"
+    "test": "jest",
+    "watch": "tsc --watch"
   },
   "dependencies": {
-    "gut-js": "^0.0.1-next.0"
+    "gut-js": "^0.1.0-next.0"
   },
   "peerDependencies": {
     "react": "^17.0.2",

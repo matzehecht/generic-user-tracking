@@ -1,0 +1,46 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - main
+      - next
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Use NodeJS 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - name: check npm
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm whoami
+      - name: Install dependencies
+        run: npx lerna bootstrap --hoist
+      - name: Run build
+        run: npx lerna run build
+      - name: Version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor}}@users.noreply.github.com"
+          if [ ${{ github.ref_name }} = next ]; then
+            npx lerna version --conventional-commits --conventional-prerelease --preid next --yes
+          else
+            npx lerna version --conventional-commits --conventional-graduate --yes
+          fi
+      - name: Publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx lerna publish from-git --yes

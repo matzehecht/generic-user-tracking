@@ -70,12 +70,15 @@ export const startTracking = (tracker: Tracker, trackingOptions?: TrackingOption
     ...trackingOptions,
   };
 
+  // Add Listeners to all existing nodes that should be tracked
   addListeners(options.root, tracker, options.prefix);
 
+  // Add observer for adding listeners to future nodes
   const mutationObserver = getObserver(tracker, options.prefix);
 
   mutationObserver.observe(options.root, { childList: true, subtree: true });
 
+  // Provide stop function for removing listeners and disconnecting observer
   const stop: Stop = () => {
     mutationObserver.disconnect();
     listenerRegistry.forEach(({ element, type, listener }) => {

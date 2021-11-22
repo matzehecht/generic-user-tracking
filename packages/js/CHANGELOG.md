@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0-next.0](https://github.com/matzehecht/generic-user-tracking/compare/v0.0.1-next.0...v0.1.0-next.0) (2021-11-22)
+
+
+### Features
+
+* initial release ([5558c38](https://github.com/matzehecht/generic-user-tracking/commit/5558c38e49c8fa9f2798aef054833247da0ea561))
+
+
+
+
+
 ## 0.0.1-next.0 (2021-11-21)
 
 
