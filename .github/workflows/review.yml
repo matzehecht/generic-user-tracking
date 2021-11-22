@@ -21,10 +21,10 @@ jobs:
       - name: Install dependencies
         run: |
           npx lerna bootstrap --hoist
-      - name: Run tests
-        run: npx lerna run test
       - name: Run build
         run: npx lerna run build
+      - name: Run tests
+        run: npx lerna run test
       - name: check npm
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
