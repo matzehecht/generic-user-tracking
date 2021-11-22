@@ -27,7 +27,7 @@ jobs:
         run: npx lerna bootstrap --hoist
       - name: Run build
         run: npx lerna run build
-      - name: 'Version and publish'
+      - name: Version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -35,8 +35,12 @@ jobs:
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor}}@users.noreply.github.com"
           if [ ${{ github.ref_name }} = next ]; then
-            npx lerna version --conventional-commits --conventional-prerelease --preid next --yes --create-release github
+            npx lerna version --conventional-commits --conventional-prerelease --preid next --yes
           else
-            npx lerna version --conventional-commits --conventional-graduate --yes --create-release github
+            npx lerna version --conventional-commits --conventional-graduate --yes
           fi
-          npx lerna publish from-git --yes
+      - name: Publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npx lerna publish from-git --yes
