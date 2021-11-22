@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.1](https://github.com/matzehecht/generic-user-tracking/compare/v0.1.0-next.0...v0.1.1) (2021-11-22)
+
+**Note:** Version bump only for package root
+
+
+
+
+
 # [0.1.0](https://github.com/matzehecht/generic-user-tracking/compare/v0.1.0-next.0...v0.1.0) (2021-11-22)
 
 **Note:** Version bump only for package root
