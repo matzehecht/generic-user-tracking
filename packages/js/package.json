@@ -1,6 +1,6 @@
 {
   "name": "gut-js",
-  "version": "0.0.1-next.0",
+  "version": "0.1.0-next.0",
   "description": "Generic usage tracking utility for vanilla js",
   "keywords": [
     "usage",
