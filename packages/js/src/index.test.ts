@@ -83,5 +83,74 @@ describe('js/index', () => {
       child.click();
       expect(spy).toHaveBeenCalledTimes(1);
     });
+    test('do not auto trace by default', async () => {
+      const child1 = document.createElement('button');
+      const child2 = document.createElement('a');
+      document.body.appendChild(child1);
+      document.body.appendChild(child2);
+      const spy = jest.fn();
+      startTracking(spy, { root: document });
+      // Wait for observer
+      await new Promise((r) => setTimeout(r, 1000));
+      child1.click();
+      child2.click();
+      expect(spy).toHaveBeenCalledTimes(0);
+    });
+    test('default auto trace set', async () => {
+      const child1 = document.createElement('button');
+      const child2 = document.createElement('a');
+      const child3 = document.createElement('div');
+      document.body.appendChild(child1);
+      document.body.appendChild(child2);
+      document.body.appendChild(child3);
+      const spy = jest.fn();
+      startTracking(spy, { root: document, autoTracing: true });
+      // Wait for observer
+      await new Promise((r) => setTimeout(r, 1000));
+      child1.click();
+      child2.click();
+      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenCalledWith('click', {}, expect.anything());
+    });
+    test('auto trace string array', async () => {
+      const child1 = document.createElement('button');
+      const child2 = document.createElement('a');
+      document.body.appendChild(child1);
+      document.body.appendChild(child2);
+      const spy = jest.fn();
+      startTracking(spy, { root: document, autoTracing: ['button'] });
+      // Wait for observer
+      await new Promise((r) => setTimeout(r, 1000));
+      child1.click();
+      child2.click();
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith('click', {}, expect.anything());
+    });
+    test('auto trace map', async () => {
+      const child1 = document.createElement('button');
+      const child2 = document.createElement('a');
+      const child3 = document.createElement('div');
+      document.body.appendChild(child1);
+      document.body.appendChild(child2);
+      document.body.appendChild(child3);
+      const spy = jest.fn();
+      startTracking(spy, { root: document, autoTracing: { click: ['button'], mouseenter: ['a'] } });
+      // Wait for observer
+      await new Promise((r) => setTimeout(r, 1000));
+      child1.click();
+      child2.click();
+      child3.click();
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledWith('click', {}, expect.anything());
+      child1.dispatchEvent(new Event('mouseenter'));
+      child2.dispatchEvent(new Event('mouseenter'));
+      child3.dispatchEvent(new Event('mouseenter'));
+      expect(spy).toHaveBeenCalledTimes(2);
+      expect(spy).toHaveBeenCalledWith('mouseenter', {}, expect.anything());
+      child1.dispatchEvent(new Event('mouseleave'));
+      child2.dispatchEvent(new Event('mouseleave'));
+      child3.dispatchEvent(new Event('mouseleave'));
+      expect(spy).toHaveBeenCalledTimes(2);
+    });
   });
 });
