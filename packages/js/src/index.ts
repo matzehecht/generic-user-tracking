@@ -1,23 +1,34 @@
-import { Stop, Tracker, TrackingOptions } from './types';
+import { AutoTracingMap, AutoTracingOption, defaultAutoTracing, defaultOptions, Stop, Tracker, TrackingOptions } from './types';
 import { getMatchAttribute, reduceDataset } from './utils';
 
 const listenerRegistry: { element?: HTMLElement; listener: EventListener; type: string }[] = [];
 
-const addListeners = (node: Node, tracker: Tracker, prefix: string) => {
-  // Only track HTMLElements
+const getAutoTracingOption = (option: AutoTracingOption): AutoTracingMap | undefined => {
+  if (option === false) {
+    return;
+  } else if (option === true) {
+    return defaultAutoTracing;
+  } else if (Array.isArray(option)) {
+    return {
+      click: option,
+    };
+  } else {
+    return option;
+  }
+};
+
+const addListeners = (node: Node, matchString: string, tracker: Tracker, options: Required<TrackingOptions>, fixedEventType?: string) => {
   if (!(node instanceof HTMLElement || node instanceof Document)) return;
 
-  const matchAttribute = getMatchAttribute(prefix);
-
-  const nodeList = node.querySelectorAll<HTMLElement>(matchAttribute);
+  const nodeList = node.querySelectorAll<HTMLElement>(matchString);
   const elements = Array.from(nodeList);
 
-  if (node instanceof HTMLElement && node.matches(matchAttribute)) {
+  if (node instanceof HTMLElement && node.matches(matchString)) {
     elements.unshift(node);
   }
 
   elements.forEach((element) => {
-    const eventType = element.dataset[`${prefix}Event`];
+    const eventType = fixedEventType || element.dataset[`${options.prefix}Event`];
 
     if (!eventType) {
       const error = new Error('gut-js: HTML attribute given but empty');
@@ -30,10 +41,11 @@ const addListeners = (node: Node, tracker: Tracker, prefix: string) => {
 
       const currentTarget = event.currentTarget;
 
-      const dataset = reduceDataset(prefix, currentTarget.dataset);
+      const dataset = reduceDataset(options.prefix, currentTarget.dataset);
 
       const context = {
-        element: event.currentTarget,
+        id: currentTarget.id,
+        element: currentTarget,
         event,
         location: window.location,
       };
@@ -51,17 +63,26 @@ const addListeners = (node: Node, tracker: Tracker, prefix: string) => {
   });
 };
 
-const getObserver = (tracker: Tracker, prefix: string): MutationObserver => {
-  return new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      mutation.addedNodes.forEach((node) => addListeners(node, tracker, prefix));
+const searchNodes = (node: Node, tracker: Tracker, options: Required<TrackingOptions>) => {
+  const matchAttribute = getMatchAttribute(options.prefix);
+  addListeners(node, matchAttribute, tracker, options);
+
+  const autoTracingOption = getAutoTracingOption(options.autoTracing);
+  if (autoTracingOption) {
+    Object.keys(autoTracingOption).forEach((eventType) => {
+      const tagNames = autoTracingOption[eventType as keyof HTMLElementEventMap] as string[];
+
+      tagNames.forEach((tagName) => addListeners(node, tagName, tracker, options, eventType));
     });
-  });
+  }
 };
 
-const defaultOptions: Required<TrackingOptions> = {
-  prefix: 'tracking',
-  root: document,
+const getObserver = (tracker: Tracker, options: Required<TrackingOptions>): MutationObserver => {
+  return new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => searchNodes(node, tracker, options));
+    });
+  });
 };
 
 export const startTracking = (tracker: Tracker, trackingOptions?: TrackingOptions): Stop => {
@@ -71,10 +92,10 @@ export const startTracking = (tracker: Tracker, trackingOptions?: TrackingOption
   };
 
   // Add Listeners to all existing nodes that should be tracked
-  addListeners(options.root, tracker, options.prefix);
+  searchNodes(options.root, tracker, options);
 
   // Add observer for adding listeners to future nodes
-  const mutationObserver = getObserver(tracker, options.prefix);
+  const mutationObserver = getObserver(tracker, options);
 
   mutationObserver.observe(options.root, { childList: true, subtree: true });
 
