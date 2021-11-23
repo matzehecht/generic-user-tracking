@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/matzehecht/generic-user-tracking/compare/v1.0.0...v1.1.0) (2021-11-23)
+
+
+### Features
+
+* **autotrace:** add an auto tracing option ([74bfb43](https://github.com/matzehecht/generic-user-tracking/commit/74bfb434034f5cb309e13ae6eb6e8554c12f4090))
+
+
+
+
+
 # [1.1.0-next.0](https://github.com/matzehecht/generic-user-tracking/compare/v1.0.0...v1.1.0-next.0) (2021-11-23)
 
 
