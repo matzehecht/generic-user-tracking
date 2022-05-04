@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/matzehecht/generic-user-tracking/compare/v1.1.0...v1.1.1) (2022-05-04)
+
+
+### Bug Fixes
+
+* **deps:** update peer dependency to support react 18 ([c971df5](https://github.com/matzehecht/generic-user-tracking/commit/c971df5281215f0b68914cd344df66fba95a6027))
+
+
+
+
+
 # [1.1.0](https://github.com/matzehecht/generic-user-tracking/compare/v1.0.0...v1.1.0) (2021-11-23)
 
 
