@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.2](https://github.com/matzehecht/generic-user-tracking/compare/v1.1.1...v1.1.2) (2024-11-16)
+
+**Note:** Version bump only for package gut-js
+
 ## [1.1.2-next.0](https://github.com/matzehecht/generic-user-tracking/compare/v1.1.1...v1.1.2-next.0) (2024-11-16)
 
 **Note:** Version bump only for package gut-js

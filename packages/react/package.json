@@ -1,6 +1,6 @@
 {
   "name": "gut-react",
-  "version": "1.1.2-next.0",
+  "version": "1.1.2",
   "description": "Generic usage tracking utility for react",
   "keywords": [
     "usage",
@@ -42,7 +42,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "gut-js": "^1.1.2-next.0"
+    "gut-js": "^1.1.2"
   },
   "peerDependencies": {
     "react": ">= 17",
