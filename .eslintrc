@@ -21,7 +21,7 @@
     "import/no-unused-modules": [
       "error",
       {
-        "ignoreExports": ["src/**.test.ts"],
+        "ignoreExports": ["src/**.test.ts*"],
         "missingExports": true,
         "src": ["."],
         "unusedExports": true
