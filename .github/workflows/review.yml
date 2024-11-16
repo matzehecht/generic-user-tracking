@@ -19,8 +19,7 @@ jobs:
         with:
           node-version: 16
       - name: Install dependencies
-        run: |
-          npx lerna bootstrap --hoist
+        run: npm ci
       - name: Run build
         run: npx lerna run build
       - name: Run tests
