@@ -1,17 +1,10 @@
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import '@testing-library/jest-dom';
 import { useTracking, Tracker } from '.';
+import { render, screen } from '@testing-library/react';
 
 describe('js/index', () => {
   describe('useTracking', () => {
-    let container: HTMLDivElement | null;
-    beforeEach(() => {
-      container = document.createElement('div');
-      document.body.appendChild(container);
-    });
-    afterEach(() => {
-      if (container) document.body.removeChild(container);
-      container = null;
-    });
     test('append listener to existing component', async () => {
       const spy = jest.fn();
       function TestComponent({ tracker }: { tracker: Tracker }) {
@@ -24,9 +17,9 @@ describe('js/index', () => {
         );
       }
 
-      ReactDOM.render(<TestComponent tracker={spy} />, container);
+      render(<TestComponent tracker={spy} />);
 
-      const button = container?.querySelector('button');
+      const button = await screen.findByRole('button');
       expect(button).toBeInstanceOf(HTMLButtonElement);
       expect(spy).toHaveBeenCalledTimes(0);
 
@@ -48,18 +41,18 @@ describe('js/index', () => {
       }
 
       const spy = jest.fn();
-      ReactDOM.render(<TestComponent tracker={spy} prefix={'tracking'} />, container);
+      const { rerender } = render(<TestComponent tracker={spy} prefix={'tracking'} />);
       await new Promise((r) => setTimeout(r, 10));
 
-      const firstButton = container?.querySelector('button');
+      const firstButton = await screen.findByRole('button');
       firstButton?.click();
       expect(spy).toHaveBeenCalledWith('click', { event: 'click', sourceComponent: 'anything' }, expect.anything());
       expect(spy).toHaveBeenCalledTimes(1);
 
-      ReactDOM.render(<TestComponent tracker={spy} prefix={'tracking2'} />, container);
+      rerender(<TestComponent tracker={spy} prefix={'tracking2'} />);
       await new Promise((r) => setTimeout(r, 10));
 
-      const secondButton = container?.querySelector('button');
+      const secondButton = await screen.findByRole('button');
       secondButton?.click();
       expect(spy).toHaveBeenCalledTimes(1);
     });
@@ -79,17 +72,17 @@ describe('js/index', () => {
       }
 
       const spy = jest.fn();
-      ReactDOM.render(<TestComponent tracker={spy} prefix={'tracking'} displayChild={false} />, container);
+      const { rerender } = render(<TestComponent tracker={spy} prefix={'tracking'} displayChild={false} />);
       await new Promise((r) => setTimeout(r, 10));
 
-      const firstButton = container?.querySelector('button');
+      const firstButton = screen.queryByRole('button');
       firstButton?.click();
       expect(spy).toHaveBeenCalledTimes(0);
 
-      ReactDOM.render(<TestComponent tracker={spy} prefix={'tracking'} displayChild={true} />, container);
+      rerender(<TestComponent tracker={spy} prefix={'tracking'} displayChild={true} />);
       await new Promise((r) => setTimeout(r, 10));
 
-      const secondButton = container?.querySelector('button');
+      const secondButton = await screen.findByRole('button');
       secondButton?.click();
       expect(spy).toHaveBeenCalledWith('click', { event: 'click', sourceComponent: 'anything' }, expect.anything());
       expect(spy).toHaveBeenCalledTimes(1);
@@ -110,19 +103,18 @@ describe('js/index', () => {
       }
 
       const spy = jest.fn();
-      ReactDOM.render(<TestComponent tracker={spy} prefix={'tracking'} displayChild={true} />, container);
+      const { rerender } = render(<TestComponent tracker={spy} prefix={'tracking'} displayChild={true} />);
       await new Promise((r) => setTimeout(r, 10));
 
-      const firstButton = container?.querySelector('button');
-      firstButton?.click();
+      const button = await screen.findByRole('button');
+      button?.click();
       expect(spy).toHaveBeenCalledWith('click', { event: 'click', sourceComponent: 'anything' }, expect.anything());
       expect(spy).toHaveBeenCalledTimes(1);
 
-      ReactDOM.render(<TestComponent tracker={spy} prefix={'tracking'} displayChild={false} />, container);
+      rerender(<TestComponent tracker={spy} prefix={'tracking'} displayChild={false} />);
       await new Promise((r) => setTimeout(r, 10));
 
-      const secondButton = container?.querySelector('button');
-      secondButton?.click();
+      button?.click();
       expect(spy).toHaveBeenCalledTimes(1);
     });
   });
